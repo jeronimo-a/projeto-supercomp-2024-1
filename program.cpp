@@ -16,8 +16,9 @@ Programa que encontra a clique máxima em um grafo.
 const std::string SOURCE_FILENAME = "graph.txt";
 
 // identidades de funções
-int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B);                                // verifica se um node é adjacnete a outro
-std::vector<std::vector<int>> readGraph(const std::string& filename, int& n_nodes);                         // cria a matriz de adjacência a partir to texto do grafo
+int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B);                    // verifica se um node é adjacnete a outro
+int isAdjacentToAll(std::vector<std::vector<int>> graph, std::vector<int> nodes, int node);     // verifica se um node é adjacente a todos da uma lista
+std::vector<std::vector<int>> readGraph(const std::string& filename, int& n_nodes);             // cria a matriz de adjacência a partir to texto do grafo
 
 // função principal
 int main() {
@@ -40,6 +41,12 @@ int main() {
     std::cout << isAdjacent(graph, 1, 0) << std::endl;
     std::cout << isAdjacent(graph, 4, 0) << std::endl;
     std::cout << isAdjacent(graph, 12, 3) << std::endl;
+
+    // etapa 2.2.2
+    std::vector<int> test_group = {1, 2, 3, 4, 5};
+    std::cout << isAdjacentToAll(graph, test_group, 0) << std::endl;
+    std::cout << isAdjacentToAll(graph, test_group, 6) << std::endl;
+    std::cout << isAdjacentToAll(graph, test_group, 7) << std::endl;
     // ### TESTE ###########
 }
 
@@ -57,6 +64,29 @@ int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B) {
 
    // verifica na matriz de adjacência
    return graph[node_A][node_B];
+}
+
+int isAdjacentToAll(std::vector<std::vector<int>> graph, std::vector<int> nodes, int node) {
+    /*
+    função que verifica se um nó específico é adjacente a todos os nós de uma lista
+
+    recebe:
+    - graph: matriz de adjacência do grafo
+    - nodes: vetor dos nós em questão
+    - node: número do nó específico
+
+    retorna: true ou false
+    */
+
+    // loop de verificação
+    for (int i = 0; i < nodes.size(); i++) {            // percorre todos os nós do grupo
+        if (isAdjacent(graph, node, nodes[i]) == 0) {   // verifica se é adjacente ao nó membro do grupo em questão
+            return 0;                                   // se não for, já retorna 0
+        }
+    }
+
+    // se chegou até aqui, quer dizer que é adjacente a todos
+    return 1;
 }
 
 // função que lê um grafo não direcionado a partir do arquivo de entrada em forma de texto
