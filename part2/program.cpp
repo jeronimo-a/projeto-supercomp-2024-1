@@ -21,6 +21,7 @@ int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B);    
 int isAdjacentToAll(std::vector<std::vector<int>> graph, std::vector<int> nodes, int node);         // verifica se um node é adjacente a todos da uma lista
 std::vector<int> findClique(std::vector<std::vector<int>> graph, std::vector<int> candidates);      // encontra uma clique com base em um vetor de candidatos
 std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph);                            // procura a clique máxima pela heurística gulosa
+std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vector<int> nodes);    // ordena um vetor de nós com base no grau
 std::vector<std::vector<int>> readGraph(const std::string& filename, int& n_nodes);                 // cria a matriz de adjacência a partir to texto do grafo
 
 // função principal
@@ -64,6 +65,9 @@ std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
     for (int i = 0; i < graph.size(); i++) {
         candidates[i] = i;
     }
+
+    // ordena os nodes pelo grau
+    candidates = sortNodesByDegree(graph, candidates);
 
     std::vector<int> maximum_clique;    // maior clique de acordo com a heurística
 
@@ -118,6 +122,38 @@ std::vector<int> findClique(std::vector<std::vector<int>> graph, std::vector<int
     }
 
     return clique;
+}
+
+std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vector<int> nodes) {
+    /*
+    ordena um vetor de nós de acordo com o grau
+
+    recebe:
+    - graph: matriz de adjacência do grafo
+    - nodes: vetor de nós a ser ordenado
+
+    retorna: vetor de nós ordenado
+    */
+
+    // etapa 1: gera o vetor dos graus
+
+    // variáveis auxiliares e declaração do vetor de graus
+    int n_nodes = graph.size();         // quantidade de nós na rede
+    std::vector<int> degrees(n_nodes);  // vetor dos graus dos nós
+
+    // inicialização do vetor dos graus
+    for (int i = 0; i < n_nodes; i++) {     // percorre todos os nós
+        for (int j = 0; j < n_nodes; j++) { // percorre todos os demais nós
+            degrees[i] += graph[i][j];      // soma a adjacência ao elemento correspondente na matriz dos graus
+        }
+        std::cout << degrees[i] << " "; // ### TESTE #########
+    }
+    std::cout << std::endl;             // ### TESTE #########
+
+    
+    return degrees;
+
+
 }
 
 int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B) {
