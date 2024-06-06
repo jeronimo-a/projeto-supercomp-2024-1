@@ -35,4 +35,4 @@ retornar a clique máxima
 
 É possível implementar alguma poda? Algum critério que evite calcular um nó, dado que você já descobriu uma clique maior?
 
-É possível verificar qual o tamanho máximo da clique que será gerada pelo pseudocódigo fornecido no enunciado, é impossível que ele seja maior que o grau do último nó do vetor dos candidatos. Desta forma, antes de rodar a função do pseudocódigo, faz sentido verificar se o tamanhoa da maior clique encontrada é maior que o grau do último nó do vetor.
+É possível verificar qual o tamanho máximo da clique que será gerada pelo pseudocódigo fornecido no enunciado, é impossível que ele seja maior que o grau do último nó do vetor dos candidatos. Desta forma, antes de rodar a função do pseudocódigo, faz sentido verificar se o tamanho da maior clique encontrada é maior que o grau do último nó do vetor.
