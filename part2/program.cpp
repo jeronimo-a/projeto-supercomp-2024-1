@@ -135,25 +135,29 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
     retorna: vetor de nós ordenado
     */
 
-    // etapa 1: gera o vetor dos graus
+    // etapa 1: gera a matriz grau x nó
 
-    // variáveis auxiliares e declaração do vetor de graus
-    int n_nodes = graph.size();         // quantidade de nós na rede
-    std::vector<int> degrees(n_nodes);  // vetor dos graus dos nós
+    // variáveis auxiliares e declaração da matriz grau x nó
+    int n_nodes = graph.size();                                                     // quantidade de nós na rede
+    std::vector<std::vector<int>> degrees_matrix(n_nodes, std::vector<int>(2, 0));  // matriz grau x nó, inicializada com zeros
 
-    // inicialização do vetor dos graus
-    for (int i = 0; i < n_nodes; i++) {     // percorre todos os nós
-        for (int j = 0; j < n_nodes; j++) { // percorre todos os demais nós
-            degrees[i] += graph[i][j];      // soma a adjacência ao elemento correspondente na matriz dos graus
+    // inicialização da matriz grau x nó
+    // esse trecho poderia ser mais eficiente, já que o grafo não é direcionado
+    for (int i = 0; i < n_nodes; i++) {             // percorre todas as linhas da matriz do grafo e da matriz grau x nó
+        degrees_matrix[i][1] = i;                   // inicializa a segunda coluna da linha como o número do nó
+        for (int j = 0; j < n_nodes; j++) {         // percorre todas as colunas da matriz do grafo
+            degrees_matrix[i][0] += graph[i][j];    // soma ao grau do nó a adjacência
         }
-        std::cout << degrees[i] << " "; // ### TESTE #########
+        
+        // ### TESTE ########
+        std::cout << degrees_matrix[i][1] << "\t: " << degrees_matrix[i][0] << std::endl;
+        // ### TESTE ########
     }
-    std::cout << std::endl;             // ### TESTE #########
+
+    // etapa 2: criação da relação grau -> nó
 
     
-    return degrees;
-
-
+    return std::vector<int>();
 }
 
 int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B) {
