@@ -69,6 +69,14 @@ std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
     // ordena os nodes pelo grau
     candidates = sortNodesByDegree(graph, candidates);
 
+    // #### TESTE ###########
+    std::cout << std::endl;
+    for (int i = 0; i < candidates.size(); i++) {
+        std::cout << candidates[i] << " ";
+    }
+    std::cout << std::endl;
+    // #### TESTE ###########
+
     std::vector<int> maximum_clique;    // maior clique de acordo com a heurística
 
     // retorna a clique máxima
@@ -154,10 +162,31 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
         // ### TESTE ########
     }
 
-    // etapa 2: criação da relação grau -> nó
+    // etapa 2: ordenar a matriz pela primeira coluna (dos graus) e retornar apenas os nós
 
+    // ordena a matriz usando uma função lambda
+    std::sort(
+        degrees_matrix.begin(),                                     // começo da matriz
+        degrees_matrix.end(),                                       // final da matriz
+        [](const std::vector<int>& a, const std::vector<int>& b) {  // função lambda
+            return a[0] < b[0];                                     
+        }
+    );
+
+    // declara o vetor de retorno e o inicializa com os nós em ordem
+    std::vector<int> nodes_by_degree(n_nodes);
+    for (int i = 0; i < n_nodes; i++) {
+        nodes_by_degree[i] = degrees_matrix[i][1];
+    }
+
+    // ### TESTE ########
+    std::cout << std::endl;
+    for (int i = 0; i < n_nodes; i++) {
+        std::cout << degrees_matrix[i][1] << "\t: " << degrees_matrix[i][0] << std::endl;
+    }
+    // ### TESTE ########
     
-    return std::vector<int>();
+    return nodes_by_degree;
 }
 
 int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B) {
