@@ -4,28 +4,23 @@ Supercomputação, Projeto Final
 
 Código fonte principal
 
-Programa que encontra a clique máxima em um grafo.
+Programa que encontra a clique máxima em um grafo a partir da heurística gulosa.
 */
 
 #include <algorithm>
 #include <iostream>
 #include <fstream>
-#include <random>
 #include <vector>
 #include <string>
 
-// constantes de controle
-const int ITERATIONS = 10000;   // número de iterações do método Monte Carlo
-const int SEED       = 12376;   // seed do gerador de números aleatórios
-
-// constantes secundárias
+// constantes
 const std::string SOURCE_FILENAME = "../inputs/graph.txt";
 
 // identidades de funções
 int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B);                        // verifica se um node é adjacnete a outro
 int isAdjacentToAll(std::vector<std::vector<int>> graph, std::vector<int> nodes, int node);         // verifica se um node é adjacente a todos da uma lista
 std::vector<int> findClique(std::vector<std::vector<int>> graph, std::vector<int> candidates);      // encontra uma clique com base em um vetor de candidatos
-std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph, int iterations, int seed);  // procura a clique máxima por Monte Carlo
+std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph);                            // procura a clique máxima pela heurística gulosa
 std::vector<std::vector<int>> readGraph(const std::string& filename, int& n_nodes);                 // cria a matriz de adjacência a partir to texto do grafo
 
 // função principal
@@ -42,8 +37,8 @@ int main() {
     }
 
     // acha a clique máxima e verboes de feedback
-    std::cout << "Encontrando a clique máxima por Monte Carlo" << std::endl;
-    std::vector<int> clique = findMaximumClique(graph, ITERATIONS, SEED);
+    std::cout << "Encontrando a clique máxima pela heurística gulosa" << std::endl;
+    std::vector<int> clique = findMaximumClique(graph);
 
     // ### TESTE #########
     for (int i = 0; i < clique.size(); i++) {
@@ -53,18 +48,15 @@ int main() {
     // ### TESTE #########
 }
 
-std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph, int iterations, int seed) {
+std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
     /*
-    função que encontra a clique "máxima" de um grafo usando o método Monte Carlo
-    funciona achando cliques quaisquer a partir de um vetor de candidatos aleatorizada
-    retorna a maior clique que encontrou no número de iterações
+    função que encontra a clique "máxima" de um grafo usando a heurística gulosa
+    retotrna clique obtido a partir de um vetor de candidatos ordenado pelo grau de cada um
 
     recebe:
     - graph: a matriz de adjacência do grafo
-    - iterations: número de iterações
-    - seed: seed do gerado de números pseudoaleatórios
 
-    retorna: o vetor da clique "máxima"
+    retorna: o vetor da clique "máxima" de acordo com a heurística gulosa
     */
 
     // gera a lista de candidatos inicial
@@ -72,31 +64,8 @@ std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph, int iter
     for (int i = 0; i < graph.size(); i++) {
         candidates[i] = i;
     }
-    
-    // configura o gerador de números aleatórios
-    std::default_random_engine random_number_generator(seed);
 
-    // variáveis auxiliares
-    int maximum_clique_size = -1;       // tamanho da maior clique encontrada
-    std::vector<int> maximum_clique;    // maior clique encontrada
-
-    // loop de identificação das cliques
-    for (int i = 0; i < iterations; i++) {  // roda iterations vezes
-
-        // print de verbose para feedback de execução
-        std::cout << "Iteração " << i << "/" << iterations << std::endl;
-
-        // embaralha os candidatos e gera uma clique a partir deles
-        std::shuffle(candidates.begin(), candidates.end(), random_number_generator);    // embaralha os candidatos
-        std::vector<int> clique = findClique(graph, candidates);                        // acha uma clique qualquer a partir deles
-        int clique_size = clique.size();                                                // tamanho da clique atual
-
-        // se for a maior até agora, lembra dela
-        if (clique_size > maximum_clique_size) {    // se for a maior até agora
-            maximum_clique_size = clique_size;      // registra o tamanho e esquece o da anterior
-            maximum_clique = clique;                // registra a clique e esquece a anterior
-        }
-    }
+    std::vector<int> maximum_clique;    // maior clique de acordo com a heurística
 
     // retorna a clique máxima
     return maximum_clique;
