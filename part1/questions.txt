@@ -1,0 +1,38 @@
+Respostas da tarefa 2 da parte 1 do projeto
+
+
+
+Até qual tamanho de problema você conseguiu obter um resultado em tempo hábil (aprox. 15 min)?
+
+Consegui obter resultados em tempo hábil para redes de 350 vértices. Mas, considerando que minha implementação se baseou no método de Monte Carlo, é importante levar em conta a quantidade de iterações, que, no caso em questão, foi 10000.
+
+
+
+Você deve apresentar um pseudocódigo de uma heurística para otimizar essa tarefa exaustiva.
+
+Uma possível heurística seria ordenar de forma crescente os candidatos pelos seus graus (número de conexões), em seguida embaralhar os n primeiros candidatos do vetor. Quanto menor o valor de n, menos ordenações diferentes do vetor de candidatos teriam de ser analisadas, mais também menor a probabilidade de encontrar a solução ótima (considerando um número grande de iterações).
+
+Pseudocódigo
+
+candidatos = vetor dos candidatos ordenados por identificador
+ordenar candidatos de forma crescente a partir do seu grau (número de conexões)
+
+clique máxima = vetor não inicializado
+tamanho clique máxima = -1
+
+rodar quanto mais vezes o possível:
+
+    embaralhar os n primeiros nós do vetor dos candidatos
+    clique = clique encontrada a partir da ordem atual dos candidatos
+
+    se o tamanho dessa clique encontrada for maior que o tamanho clique máxima definido acima
+        tamanho clique máxima = tamanho dessa clique atual
+        clique máxima = clique atual
+
+retornar a clique máxima
+
+
+
+É possível implementar alguma poda? Algum critério que evite calcular um nó, dado que você já descobriu uma clique maior?
+
+É possível verificar qual o tamanho máximo da clique que será gerada pelo pseudocódigo fornecido no enunciado, é impossível que ele seja maior que o grau do último nó do vetor dos candidatos. Desta forma, antes de rodar a função do pseudocódigo, faz sentido verificar se o tamanhoa da maior clique encontrada é maior que o grau do último nó do vetor.
