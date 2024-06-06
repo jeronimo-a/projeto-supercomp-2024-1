@@ -16,7 +16,8 @@ Programa que encontra a clique máxima em um grafo.
 const std::string SOURCE_FILENAME = "graph.txt";
 
 // identidades de funções
-std::vector<std::vector<int>> readGraph(const std::string& filename, int& n_nodes);
+int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B);                                // verifica se um node é adjacnete a outro
+std::vector<std::vector<int>> readGraph(const std::string& filename, int& n_nodes);                         // cria a matriz de adjacência a partir to texto do grafo
 
 // função principal
 int main() {
@@ -27,14 +28,35 @@ int main() {
     std::cout << n_nodes << std::endl;
     
     // ### TESTE ###########
-    // imprime o grafo
+    // etapa 1
     for (int i = 0; i < n_nodes; i++) {
         for (int j = 0; j < n_nodes; j++) {
             std::cout << graph[i][j] << " ";
         }
         std::cout << std::endl;
     }
+    // etapa 2.2.1
+    std::cout << isAdjacent(graph, 0, 1) << std::endl;
+    std::cout << isAdjacent(graph, 1, 0) << std::endl;
+    std::cout << isAdjacent(graph, 4, 0) << std::endl;
+    std::cout << isAdjacent(graph, 12, 3) << std::endl;
     // ### TESTE ###########
+}
+
+int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B) {
+    /*
+    função que verifica se um nó específico é adjacente a outro nó específico
+
+    recebe:
+    - graph: matriz de adjacência do grafo
+    - node_A: um dos nós a ser testado
+    - node_B: o outro nó a ser testado
+
+    retorna: true ou false
+    */
+
+   // verifica na matriz de adjacência
+   return graph[node_A][node_B];
 }
 
 // função que lê um grafo não direcionado a partir do arquivo de entrada em forma de texto
