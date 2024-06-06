@@ -19,7 +19,7 @@ const int ITERATIONS = 10000;   // número de iterações do método Monte Carlo
 const int SEED       = 12376;   // seed do gerador de números aleatórios
 
 // constantes secundárias
-const std::string SOURCE_FILENAME = "graph.txt";
+const std::string SOURCE_FILENAME = "../inputs/graph.txt";
 
 // identidades de funções
 int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B);                        // verifica se um node é adjacnete a outro
@@ -42,7 +42,7 @@ int main() {
     }
 
     // acha a clique máxima e verboes de feedback
-    std::cout << "Encontrando a clique máxima por Monte Carlo";
+    std::cout << "Encontrando a clique máxima por Monte Carlo" << std::endl;
     std::vector<int> clique = findMaximumClique(graph, ITERATIONS, SEED);
 
     // ### TESTE #########
