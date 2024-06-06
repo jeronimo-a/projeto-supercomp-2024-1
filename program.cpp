@@ -30,6 +30,13 @@ int main() {
     
     // acha a clique máxima
     std::vector<int> maximum_clique = findMaximumClique(graph);
+
+    // ### TESTE #########
+    for (int i = 0; i < maximum_clique.size(); i++) {
+        std::cout << maximum_clique[i] << " ";
+    }
+    std::cout << std::endl;
+    // ### TESTE #########
 }
 
 std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
@@ -44,6 +51,7 @@ std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
 
     etapas:
         - 1: declaração e inicialização dos vetores
+        - 2: loop externo de inclusão ou exclusão dos candidatos
     */
 
     //== ETAPA 1 === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === findMaximumClique 1
@@ -60,13 +68,39 @@ std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
         candidates[i] = i;              // iguala o valor do vetor no índice tal ao índice
     }
 
-    // ### TESTE #########
-    for (int i = 0; i < n_nodes; i++) {
-        std::cout << candidates[i] << " ";
-    }
-    std::cout << std::endl;
-    // ### TESTE #########
+    //== ETAPA 2 === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === findMaximumClique 2
 
+    // loop externo de inclusão ou exclusão dos candidatos
+    while (candidates.size() > 0) {     // roda até não sobrar mais nenhum candidato
+
+        // pega último candidato e o tira da lista
+        int outer_candidate = candidates[candidates.size() - 1];    // pega o último candidato
+        candidates.pop_back();                                      // o tira da lista de candidatos
+
+        // verifica se o candidato tem conexão com todos os membros atuais da clique máxima
+        int outer_can_be_added = isAdjacentToAll(graph, maximum_clique, outer_candidate);
+
+        // atualiza a clique máxima e renova a lista de possíveis candidatos
+        if (outer_can_be_added == 1) {
+            
+            // atualiza a clique máxima e declara a lista de novos candidatos
+            maximum_clique.push_back(outer_candidate);
+            std::vector<int> new_candidates;
+
+            // loop de seleção dos novos candidatos, são incluidos todos aqueles que tem conexão com todos os membros atuais da clique
+            for (int i = 0; i < candidates.size(); i++) {                                       // percorre todos os candidatos atuais
+                int is_adjacent_to_all = isAdjacentToAll(graph, maximum_clique, candidates[i]); // verifica se o novo candidato é adjacente a todos os membros atuais da clique
+                if (is_adjacent_to_all == 1) {                                                  // se ele for adjacente a todos os membros atuais da clique
+                    new_candidates.push_back(candidates[i]);                                    // adiciona-o à lista de novos candidatos
+                }
+            }
+
+            // atualiza a lista de candidatos
+            candidates = new_candidates;
+        }
+    }
+
+    return maximum_clique;
 }
 
 int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B) {
