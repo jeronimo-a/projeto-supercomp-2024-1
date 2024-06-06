@@ -18,6 +18,7 @@ const std::string SOURCE_FILENAME = "graph.txt";
 // identidades de funções
 int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B);                    // verifica se um node é adjacnete a outro
 int isAdjacentToAll(std::vector<std::vector<int>> graph, std::vector<int> nodes, int node);     // verifica se um node é adjacente a todos da uma lista
+std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph);                        // encontra a clique máxima
 std::vector<std::vector<int>> readGraph(const std::string& filename, int& n_nodes);             // cria a matriz de adjacência a partir to texto do grafo
 
 // função principal
@@ -26,28 +27,46 @@ int main() {
     // declara a variável da quantidade de nós e faz a leitura do grafo
     int n_nodes;                                                               // quantidade de nós do grafo, será inicializada pela função de leitura do grafo
     std::vector<std::vector<int>> graph = readGraph(SOURCE_FILENAME, n_nodes); // chamada da função de leitura do grafo
-    std::cout << n_nodes << std::endl;
     
-    // ### TESTE ###########
-    // etapa 1
-    for (int i = 0; i < n_nodes; i++) {
-        for (int j = 0; j < n_nodes; j++) {
-            std::cout << graph[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-    // etapa 2.2.1
-    std::cout << isAdjacent(graph, 0, 1) << std::endl;
-    std::cout << isAdjacent(graph, 1, 0) << std::endl;
-    std::cout << isAdjacent(graph, 4, 0) << std::endl;
-    std::cout << isAdjacent(graph, 12, 3) << std::endl;
+    // acha a clique máxima
+    std::vector<int> maximum_clique = findMaximumClique(graph);
+}
 
-    // etapa 2.2.2
-    std::vector<int> test_group = {1, 2, 3, 4, 5};
-    std::cout << isAdjacentToAll(graph, test_group, 0) << std::endl;
-    std::cout << isAdjacentToAll(graph, test_group, 6) << std::endl;
-    std::cout << isAdjacentToAll(graph, test_group, 7) << std::endl;
-    // ### TESTE ###########
+std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
+    /*
+    função que encontra a clique máxima de um grafo, que é a clique com maior número de nós
+    feita com base no pseudocódigo fornecido pelo professor
+
+    recebe:
+    - graph: matriz de adjacência do grafo
+
+    retorna: vetor de nós que compõem a clique máxima
+
+    etapas:
+        - 1: declaração e inicialização dos vetores
+    */
+
+    //== ETAPA 1 === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === === findMaximumClique 1
+
+    // variáveis auxiliares
+    int n_nodes = graph.size(); // quantidade de nós no grafo
+
+    // declaração dos vetores
+    std::vector<int> maximum_clique;        // vetor da clique máxima, vai conter os nós que pertencem a clique máxima
+    std::vector<int> candidates(n_nodes);   // lista dos candidatos, tem tamanho inicial igual à quantidade total de vértices
+
+    // inicialização do vetor de candidatos
+    for (int i = 0; i < n_nodes; i++) { // percorre todos os números de 0 até a quantidade de nós - 1
+        candidates[i] = i;              // iguala o valor do vetor no índice tal ao índice
+    }
+
+    // ### TESTE #########
+    for (int i = 0; i < n_nodes; i++) {
+        std::cout << candidates[i] << " ";
+    }
+    std::cout << std::endl;
+    // ### TESTE #########
+
 }
 
 int isAdjacent(std::vector<std::vector<int>> graph, int node_A, int node_B) {
