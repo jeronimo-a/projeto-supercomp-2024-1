@@ -1,0 +1,59 @@
+Projeto de Supercomputação
+
+Idéia:
+    Clique: conjunto de nós tais que todos estão conectados entre si
+    Objetivo: encontrar a clique máxima
+    Problema: alta complexidade computacional
+    Clique máxima: clique com o maior número de nós
+
+Tempo total: 11:30:00
+Tudo com um * foi feito
+
+Etapas:
+*   1 - Adaptar a função de construção da matriz de adjacência a partir do arquivo de texto do grafo
+    *   1.1 - Entender a formatação do arquivo e a matriz de adjacência
+    *   1.2 - Utilizar a função
+*   2 - Abordagem exaustiva
+    *   2.1 - Comentar o pseudocódigo para entender melhor o algoritmo
+    *   2.2 - Traduzir para C++
+        *   2.2.1 - Fazer função que verifica se um nó é adjacente a outro nó
+        *   2.2.2 - Fazer função que verifica se um nó é adjacente a todos em uma lista de nós
+        *   2.2.3 - Declaração dos vetores e inicialização do vetor de candidatos
+        *   2.2.4 - Loop externo de inclusão ou exclusão dos candidatos
+    *   2.3 - Implementar o resto que não foi explicado
+        *   2.3.1 - Tornar a atual função de achar o clique máximo em uma de achar clique qualquer
+        *   2.3.2 - Função que acha o clique máximo por Monte Carlo
+    *   2.4 - Responder perguntas
+*   3 - Implementação com threads OpenMP
+    *   3.1 - Entender a heurística gulosa
+    *   3.2 - Implementar a heurística gulosa
+        *   3.2.1 - Criar a estrutura de diretórios da parte 2
+        *   3.2.2 - Limpar a implementação anterior
+        *   3.2.3 - Função de ordenar os nós com base em seu grau
+            *   3.2.3.1 - Criar a matriz grau x nó
+            *   3.2.3.2 - Ordenar a matriz pelo grau e retornar os nós
+        *   3.2.4 - Gerar a clique a partir do vetor de candidatos ordenado pelo grau
+    *   3.3 - Paralelizar a implementação com OpenMP
+        *   3.3.1 - Paralelizar a inicialização do vetor de candidatos
+        *   3.3.2 - Paralelizar a inicialização da matriz grau x nó da função de ordenação por grau
+        *   3.3.3 - Paralelizar a inicialização do vetor de retorno da função de ordenação por grau
+        *   3.3.4 - Paralelizar a função de encontrar a clique local
+    *   3.4 - Comparação da heurística gulosa com e sem a paralelização
+        *   3.4.1 - Criar cópia do algoritmo não paralelizado
+        *   3.4.2 - Adaptar o algoritmo sequencial
+        *   3.4.3 - Incluir o tempo de execução no output dos programas
+            *   3.4.3.1 - Parelelo
+            *   3.4.3.2 - Sequencial
+        *   3.4.4 - Justificar as mudanças feitas no código sequencial
+        *   3.4.5 - Analisar a mudança na performance
+            *   3.4.5.1 - Rodar os programas para uma variedade de entradas e registrar os tempos
+            *   3.4.5.2 - Gerar gráficos comparando as velocidades de execução
+    4 - Distribuição do processamento com MPI
+*   5 - Relatório
+    *   5.1 - Etapa 1: busca exaustiva
+    *   5.2 - Etapa 2: implementação com threads OpenMP
+    *   5.3 - Etapa 3: implementação com MPI
+    *   5.4 - Comparação das performances
+        *   5.4.1 - Incluir contagem de tempo no algoritmo de Monte Carlo
+
+
