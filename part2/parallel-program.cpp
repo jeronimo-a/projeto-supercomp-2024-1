@@ -116,22 +116,14 @@ std::vector<int> findClique(std::vector<std::vector<int>> graph, std::vector<int
             // atualiza a clique máxima e declara a lista de novos candidatos
             clique.push_back(outer_candidate);
             std::vector<int> new_candidates;
-
-            // faz a seleção dos candidatos da próxima iteração de forma paralelizada
-            #pragma omp parallel
-            {
                 
-                // declaração do vetor dos candidatos selecionados pela thread
-                std::vector<int> local_new_candidates;
-                
-                // itera sobre cada candidato atual, filtrando os que não podem fazer parte da clique
-                #pragma omp for schedule(dynamic) ordered                                       // paraleliza o loop com escalamento dinâmico e ordenação estrita, porque é importante manter a mesma ordem dos candidatos em comparação a ordem não paralelizada
-                for (int i = 0; i < candidates.size(); ++i) {                                   // percorre todos os candidatos
-                    int is_adjacent_to_all = isAdjacentToAll(graph, clique, candidates[i]);     // verifica se o candidato é adjacente a todos os nós que já fazem parte da clique
-                    if (is_adjacent_to_all == 1) {                                              // se for adjacente a todos os membros atuais da clique
-                        #pragma omp ordered                                                     // trecho que a ordem de execução importa
-                        new_candidates.push_back(candidates[i]);                                // inclui o nó em questão na lista global de candidatos para a próxima iteração, mantendo a ordem
-                    }
+            // itera sobre cada candidato atual, filtrando os que não podem fazer parte da clique
+            #pragma omp parallel for schedule(dynamic) ordered                                       // paraleliza o loop com escalamento dinâmico e ordenação estrita, porque é importante manter a mesma ordem dos candidatos em comparação a ordem não paralelizada
+            for (int i = 0; i < candidates.size(); ++i) {                                   // percorre todos os candidatos
+                int is_adjacent_to_all = isAdjacentToAll(graph, clique, candidates[i]);     // verifica se o candidato é adjacente a todos os nós que já fazem parte da clique
+                if (is_adjacent_to_all == 1) {                                              // se for adjacente a todos os membros atuais da clique
+                    #pragma omp ordered                                                     // trecho que a ordem de execução importa
+                    new_candidates.push_back(candidates[i]);                                // inclui o nó em questão na lista global de candidatos para a próxima iteração, mantendo a ordem
                 }
             }
 
@@ -161,7 +153,7 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
     std::vector<std::vector<int>> degrees_matrix(n_nodes, std::vector<int>(2, 0));  // matriz grau x nó, inicializada com zeros
 
     // inicialização da matriz grau x nó
-    #pragma omp parallel for                        // paraleliza a inicialização das linhas, pareceu não valer a pena colapsar, porque teria que criar outro loop de preenchimento dos IDs dos nós
+    #pragma omp parallel for                        // paraleliza a inicialização das linhas, não é possível colapsar, porque no loop interno mais de uma thread incrementaria a variável ao mesmo tempo
     for (int i = 0; i < n_nodes; i++) {             // percorre todas as linhas da matriz do grafo e da matriz grau x nó
         degrees_matrix[i][1] = i;                   // inicializa a segunda coluna da linha como o número do nó
         for (int j = 0; j < n_nodes; j++) {         // percorre todas as colunas da matriz do grafo
