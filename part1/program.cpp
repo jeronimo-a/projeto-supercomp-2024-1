@@ -15,7 +15,7 @@ Programa que encontra a clique máxima em um grafo.
 #include <string>
 
 // constantes de controle
-const int ITERATIONS = 10000;   // número de iterações do método Monte Carlo
+const int ITERATIONS = 100;     // número de iterações do método Monte Carlo
 const int SEED       = 12376;   // seed do gerador de números aleatórios
 
 // constantes secundárias
@@ -45,12 +45,12 @@ int main() {
     std::cout << "Encontrando a clique máxima por Monte Carlo" << std::endl;
     std::vector<int> clique = findMaximumClique(graph, ITERATIONS, SEED);
 
-    // ### TESTE #########
+    // imprime o clique máximo encontrado
+    std::cout << "Tamanho do clique: " << clique.size() << std::endl;
     for (int i = 0; i < clique.size(); i++) {
         std::cout << clique[i] << " ";
     }
     std::cout << std::endl;
-    // ### TESTE #########
 }
 
 std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph, int iterations, int seed) {
