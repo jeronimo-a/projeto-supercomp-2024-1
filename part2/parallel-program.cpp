@@ -33,7 +33,7 @@ int main() {
     std::vector<std::vector<int>> graph = readGraph(SOURCE_FILENAME, n_nodes); // chamada da função de leitura do grafo
 
     // acha a clique máxima e verboes de feedback
-    std::cout << "Encontrando a clique máxima pela heurística gulosa" << std::endl;
+    std::cout << "Encontrando a clique máxima pela heurística gulosa paralelizada" << std::endl;
     std::vector<int> clique = findMaximumClique(graph);
 
     // imprime o clique máximo de acordo com a heurística

@@ -38,7 +38,7 @@ int main() {
     }
 
     // acha a clique máxima e verboes de feedback
-    std::cout << "Encontrando a clique máxima pela heurística gulosa" << std::endl;
+    std::cout << "Encontrando a clique máxima pela heurística gulosa sequencial" << std::endl;
     std::vector<int> clique = findMaximumClique(graph);
 
     // imprime o clique máximo de acordo com a heurística
@@ -93,6 +93,9 @@ std::vector<int> findClique(std::vector<std::vector<int>> graph, std::vector<int
     // loop externo de inclusão ou exclusão dos candidatos
     while (candidates.size() > 0) {     // roda até não sobrar mais nenhum candidato
 
+        // print de feedback de execução
+        std::cout << candidates.size() << std::endl;
+
         // pega último candidato e o tira da lista
         int outer_candidate = candidates[candidates.size() - 1];    // pega o último candidato
         candidates.pop_back();                                      // o tira da lista de candidatos
@@ -137,7 +140,7 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
     // etapa 1: gera a matriz grau x nó
 
     // variáveis auxiliares e declaração da matriz grau x nó
-    int n_nodes = graph.size();                                                     // quantidade de nós na rede
+    int n_nodes = nodes.size();                                                     // quantidade de nós na rede
     std::vector<std::vector<int>> degrees_matrix(n_nodes, std::vector<int>(2, 0));  // matriz grau x nó, inicializada com zeros
 
     // inicialização da matriz grau x nó
