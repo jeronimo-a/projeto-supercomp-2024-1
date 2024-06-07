@@ -31,13 +31,6 @@ int main() {
     // declara a variável da quantidade de nós e faz a leitura do grafo
     int n_nodes;                                                               // quantidade de nós do grafo, será inicializada pela função de leitura do grafo
     std::vector<std::vector<int>> graph = readGraph(SOURCE_FILENAME, n_nodes); // chamada da função de leitura do grafo
-    
-    // inicialização do vetor de candidatos
-    std::vector<int> candidates(n_nodes);
-    #pragma omp parallel for            // paraleliza a inicialização do vetor de candidatos
-    for (int i = 0; i < n_nodes; i++) { // percorre todos os números de 0 até a quantidade de nós - 1
-        candidates[i] = i;              // iguala o valor do vetor no índice tal ao índice
-    }
 
     // acha a clique máxima e verboes de feedback
     std::cout << "Encontrando a clique máxima pela heurística gulosa" << std::endl;
@@ -64,8 +57,9 @@ std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
 
     // gera a lista de candidatos inicial
     std::vector<int> candidates(graph.size());
-    for (int i = 0; i < graph.size(); i++) {
-        candidates[i] = i;
+    #pragma omp parallel for                    // paraleliza a inicialização do vetor de candidatos
+    for (int i = 0; i < graph.size(); i++) {    // percorre todos os futuros candidatos
+        candidates[i] = i;                      // atribui ao elemento de índice tal o próprio índice
     }
 
     // ordena os nodes pelo grau e calcula a clique deles
