@@ -11,6 +11,7 @@ Programa que encontra a clique máxima em um grafo a partir da heurística gulos
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <chrono>
 #include <string>
 
 // constantes
@@ -26,6 +27,9 @@ std::vector<std::vector<int>> readGraph(const std::string& filename, int& n_node
 
 // função principal
 int main() {
+
+    // início da contagem do tempo
+    auto start = std::chrono::high_resolution_clock::now();
 
     // declara a variável da quantidade de nós e faz a leitura do grafo
     int n_nodes;                                                               // quantidade de nós do grafo, será inicializada pela função de leitura do grafo
@@ -47,6 +51,13 @@ int main() {
         std::cout << clique[i] << " ";
     }
     std::cout << std::endl;
+
+    // fim da contagem do tempo e cálculo do tempo de execução
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+    // imprime o tempo de execução
+    std::cout << "Tempo de execução: " << duration.count() << "ms" << std::endl;
 }
 
 std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
