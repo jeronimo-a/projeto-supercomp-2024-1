@@ -161,8 +161,9 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
 
     // declara o vetor de retorno e o inicializa com os nós em ordem
     std::vector<int> nodes_by_degree(n_nodes);
-    for (int i = 0; i < n_nodes; i++) {
-        nodes_by_degree[i] = degrees_matrix[i][1];
+    #pragma omp parallel for                        // paraleliza a criação do vetor de retorno
+    for (int i = 0; i < n_nodes; i++) {             // percorre todas as linhas da matriz de grau x nó ordenada
+        nodes_by_degree[i] = degrees_matrix[i][1];  // copia o ID do nó para o vetor de retorno
     }
     
     return nodes_by_degree;
