@@ -15,8 +15,8 @@ Programa que encontra a clique máxima em um grafo.
 #include <string>
 
 // constantes de controle
+const int ITERATIONS = 100;     // número de iterações do método Monte Carlo
 const int SEED       = 12376;   // seed do gerador de números aleatórios
-int ITERATIONS;                 // número de iterações, será N fatorial, afim de simular a performance de uma busca exaustiva
 
 // constantes secundárias
 const std::string SOURCE_FILENAME = "../inputs/graph.txt";
@@ -34,12 +34,6 @@ int main() {
     // declara a variável da quantidade de nós e faz a leitura do grafo
     int n_nodes;                                                               // quantidade de nós do grafo, será inicializada pela função de leitura do grafo
     std::vector<std::vector<int>> graph = readGraph(SOURCE_FILENAME, n_nodes); // chamada da função de leitura do grafo
-
-    // calcula o número de iterações
-    ITERATIONS = 1;
-    for (int i = 0; i < n_nodes; i++) {
-        ITERATIONS *= i;                // N fatorial, que é o número de arranjos total do vetor de nodes candidatos
-    }
     
     // inicialização do vetor de candidatos
     std::vector<int> candidates(n_nodes);
@@ -57,8 +51,6 @@ int main() {
         std::cout << clique[i] << " ";
     }
     std::cout << std::endl;
-
-    return 0;
 }
 
 std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph, int iterations, int seed) {
