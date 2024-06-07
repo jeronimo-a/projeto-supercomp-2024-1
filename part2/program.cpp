@@ -150,7 +150,7 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
     // etapa 1: gera a matriz grau x nó
 
     // variáveis auxiliares e declaração da matriz grau x nó
-    int n_nodes = graph.size();                                                     // quantidade de nós na rede
+    int n_nodes = nodes.size();                                                     // quantidade de nós na rede
     std::vector<std::vector<int>> degrees_matrix(n_nodes, std::vector<int>(2, 0));  // matriz grau x nó, inicializada com zeros
 
     // inicialização da matriz grau x nó
