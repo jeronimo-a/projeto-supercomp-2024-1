@@ -12,6 +12,7 @@ Programa que encontra a clique máxima em um grafo a partir da heurística gulos
 #include <fstream>
 #include <vector>
 #include <string>
+#include <omp.h>
 
 // constantes
 const std::string SOURCE_FILENAME = "../inputs/graph.txt";
@@ -33,6 +34,7 @@ int main() {
     
     // inicialização do vetor de candidatos
     std::vector<int> candidates(n_nodes);
+    #pragma omp parallel for            // paraleliza a inicialização do vetor de candidatos
     for (int i = 0; i < n_nodes; i++) { // percorre todos os números de 0 até a quantidade de nós - 1
         candidates[i] = i;              // iguala o valor do vetor no índice tal ao índice
     }
@@ -93,6 +95,9 @@ std::vector<int> findClique(std::vector<std::vector<int>> graph, std::vector<int
     // loop externo de inclusão ou exclusão dos candidatos
     while (candidates.size() > 0) {     // roda até não sobrar mais nenhum candidato
 
+        // verbose de indicação de progresso
+        std::cout << candidates.size() << std::endl;
+
         // pega último candidato e o tira da lista
         int outer_candidate = candidates[candidates.size() - 1];    // pega o último candidato
         candidates.pop_back();                                      // o tira da lista de candidatos
@@ -110,8 +115,8 @@ std::vector<int> findClique(std::vector<std::vector<int>> graph, std::vector<int
             // loop de seleção dos novos candidatos, são incluidos todos aqueles que tem conexão com todos os membros atuais da clique
             for (int i = 0; i < candidates.size(); i++) {                                       // percorre todos os candidatos atuais
                 int is_adjacent_to_all = isAdjacentToAll(graph, clique, candidates[i]); // verifica se o novo candidato é adjacente a todos os membros atuais da clique
-                if (is_adjacent_to_all == 1) {                                                  // se ele for adjacente a todos os membros atuais da clique
-                    new_candidates.push_back(candidates[i]);                                    // adiciona-o à lista de novos candidatos
+                if (is_adjacent_to_all == 1) {                                          // se ele for adjacente a todos os membros atuais da clique
+                    new_candidates.push_back(candidates[i]);                            // adiciona-o à lista de novos candidatos
                 }
             }
 
