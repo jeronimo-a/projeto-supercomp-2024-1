@@ -41,12 +41,12 @@ int main() {
     std::cout << "Encontrando a clique máxima pela heurística gulosa" << std::endl;
     std::vector<int> clique = findMaximumClique(graph);
 
-    // ### TESTE #########
+    // imprime o clique máximo de acordo com a heurística
+    std::cout << "Tamanho do clique: " << clique.size() << std::endl;
     for (int i = 0; i < clique.size(); i++) {
         std::cout << clique[i] << " ";
     }
     std::cout << std::endl;
-    // ### TESTE #########
 }
 
 std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
@@ -66,18 +66,9 @@ std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
         candidates[i] = i;
     }
 
-    // ordena os nodes pelo grau
-    candidates = sortNodesByDegree(graph, candidates);
-
-    // #### TESTE ###########
-    std::cout << std::endl;
-    for (int i = 0; i < candidates.size(); i++) {
-        std::cout << candidates[i] << " ";
-    }
-    std::cout << std::endl;
-    // #### TESTE ###########
-
-    std::vector<int> maximum_clique;    // maior clique de acordo com a heurística
+    // ordena os nodes pelo grau e calcula a clique deles
+    candidates = sortNodesByDegree(graph, candidates);                  // ordena os nós pelo grau
+    std::vector<int> maximum_clique = findClique(graph, candidates);    // maior clique de acordo com a heurística
 
     // retorna a clique máxima
     return maximum_clique;
@@ -156,10 +147,6 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
         for (int j = 0; j < n_nodes; j++) {         // percorre todas as colunas da matriz do grafo
             degrees_matrix[i][0] += graph[i][j];    // soma ao grau do nó a adjacência
         }
-        
-        // ### TESTE ########
-        std::cout << degrees_matrix[i][1] << "\t: " << degrees_matrix[i][0] << std::endl;
-        // ### TESTE ########
     }
 
     // etapa 2: ordenar a matriz pela primeira coluna (dos graus) e retornar apenas os nós
@@ -178,13 +165,6 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
     for (int i = 0; i < n_nodes; i++) {
         nodes_by_degree[i] = degrees_matrix[i][1];
     }
-
-    // ### TESTE ########
-    std::cout << std::endl;
-    for (int i = 0; i < n_nodes; i++) {
-        std::cout << degrees_matrix[i][1] << "\t: " << degrees_matrix[i][0] << std::endl;
-    }
-    // ### TESTE ########
     
     return nodes_by_degree;
 }
