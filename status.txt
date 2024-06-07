@@ -6,7 +6,7 @@ Idéia:
     Problema: alta complexidade computacional
     Clique máxima: clique com o maior número de nós
 
-Tempo total: 11:30:00
+Tempo total: 11:40:00
 Tudo com um * foi feito
 
 Etapas:
