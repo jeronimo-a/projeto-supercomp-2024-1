@@ -140,7 +140,7 @@ std::vector<int> sortNodesByDegree(std::vector<std::vector<int>> graph, std::vec
     std::vector<std::vector<int>> degrees_matrix(n_nodes, std::vector<int>(2, 0));  // matriz grau x nó, inicializada com zeros
 
     // inicialização da matriz grau x nó
-    // esse trecho poderia ser mais eficiente, já que o grafo não é direcionado
+    #pragma omp parallel for                        // paraleliza a inicialização das linhas, pareceu não valer a pena colapsar, porque teria que criar outro loop de preenchimento dos IDs dos nós
     for (int i = 0; i < n_nodes; i++) {             // percorre todas as linhas da matriz do grafo e da matriz grau x nó
         degrees_matrix[i][1] = i;                   // inicializa a segunda coluna da linha como o número do nó
         for (int j = 0; j < n_nodes; j++) {         // percorre todas as colunas da matriz do grafo
