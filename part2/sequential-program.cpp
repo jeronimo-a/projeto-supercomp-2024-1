@@ -58,6 +58,8 @@ int main() {
 
     // imprime o tempo de execução
     std::cout << "Tempo de execução: " << duration.count() << "ms" << std::endl;
+
+    return 0;
 }
 
 std::vector<int> findMaximumClique(std::vector<std::vector<int>> graph) {
