@@ -106,16 +106,30 @@ std::vector<int> findClique(std::vector<std::vector<int>> graph, std::vector<int
             clique.push_back(outer_candidate);
             std::vector<int> new_candidates;
 
-            // loop de seleção dos novos candidatos, são incluidos todos aqueles que tem conexão com todos os membros atuais da clique
-            for (int i = 0; i < candidates.size(); i++) {                                       // percorre todos os candidatos atuais
-                int is_adjacent_to_all = isAdjacentToAll(graph, clique, candidates[i]); // verifica se o novo candidato é adjacente a todos os membros atuais da clique
-                if (is_adjacent_to_all == 1) {                                          // se ele for adjacente a todos os membros atuais da clique
-                    new_candidates.push_back(candidates[i]);                            // adiciona-o à lista de novos candidatos
+            // faz a seleção dos candidatos da próxima iteração de forma paralelizada
+            #pragma omp parallel
+            {
+                
+                // declaração do vetor dos candidatos selecionados pela thread
+                std::vector<int> local_new_candidates;
+                
+                // itera sobre cada candidato atual, filtrando os que não podem fazer parte da clique
+                #pragma omp for schedule(dynamic)                                           // paraleliza o loop com escalamento dinâmico, porque o tempo de processamento de cada thread pode ser diferente
+                for (int i = 0; i < candidates.size(); ++i) {                               // percorre todos os candidatos
+                    int is_adjacent_to_all = isAdjacentToAll(graph, clique, candidates[i]); // verifica se o candidato é adjacente a todos os nós que já fazem parte da clique
+                    if (is_adjacent_to_all == 1) {                                          // se for adjacente a todos os membros atuais da clique
+                        local_new_candidates.push_back(candidates[i]);                      // inclui o nó em questão na lista dos candidatos para a próxima iteração
+                    }
                 }
+
+                // junta todas as listas locais dos novos candidatos
+                #pragma omp critical                                                                                    // apenas uma thread por vez
+                new_candidates.insert(new_candidates.end(), local_new_candidates.begin(), local_new_candidates.end());  // concatena a lista global com a local
             }
 
-            // atualiza a lista de candidatos
-            candidates = new_candidates;
+            // reordena os nós pelo grau e atualiza a lista de candidatos
+            new_candidates = sortNodesByDegree(graph, new_candidates);  // ordena os novos candidatos pelo grau do nó
+            candidates = new_candidates;                                // atualiza a lista de candidatos para a próxima iteração
         }
     }
 
